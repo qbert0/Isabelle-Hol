@@ -1,0 +1,217 @@
+theory TestRivList
+  imports Main
+
+begin
+(* CÂU 1: a \<and> \<not>b \<Longrightarrow> a \<or> b *)
+lemma cau1: "a \<and> \<not>b \<longrightarrow> a \<or> b"
+  apply (rule impI)    
+  apply (erule conjE)  
+  apply (rule disjI1)  
+  apply assumption     
+  done
+
+(* CÂU 2: ((a \<longrightarrow> b) \<longrightarrow> a) = a (Luật Peirce) *)
+lemma cau2: "((a \<longrightarrow> b) \<longrightarrow> a) = a"
+  apply (rule iffI)     
+  apply (case_tac a)    
+  apply assumption     
+  apply simp           
+  apply (rule impI)
+  apply assumption
+  done
+
+(* CÂU 3: a \<and> \<not>a \<Longrightarrow> b (Mâu thuẫn suy ra tất cả) *)
+lemma cau3: "a \<and> \<not>a \<longrightarrow> b"
+  apply (rule impI)
+  apply (erule conjE)
+  apply (erule notE)  
+  apply assumption
+  done
+
+(* CÂU 4: (a \<longrightarrow> b) \<or> (b \<longrightarrow> a) *)
+lemma cau4: "(a \<longrightarrow> b) \<or> (b \<longrightarrow> a)"
+  apply (rule disjCI)  (* Giả sử vế phải sai, chứng minh vế trái đúng *)
+  apply (rule impI)
+  apply (case_tac b)   (* Xét trường hợp b = True/False *)
+   apply simp          
+  apply simp
+  done
+
+(* CÂU 5: \<not>(a \<and> \<not>(a \<or> b)) *)
+lemma cau5: "\<not>(a \<and> \<not>(a \<or> b))"
+  apply (rule notI)    (* Giả sử ngược lại *)
+  apply (erule conjE)
+  apply (erule notE)   
+  apply (rule disjI1)
+  apply assumption
+  done
+
+(* CÂU 6: a = b \<or> a = c \<or> b = c (Nguyên lý chuồng bồ câu) *)
+lemma cau6: "a = b \<or> a = c \<or> b = c"
+  apply (case_tac a)  
+   apply (case_tac b)
+    apply simp
+   apply simp
+  apply (case_tac b)
+   apply simp
+  apply simp
+  done
+
+(* CÂU 7: (a \<longrightarrow> \<not>a) \<longrightarrow> \<not>a *)
+lemma cau7: "(a \<longrightarrow> \<not>a) \<longrightarrow> \<not>a"
+  apply (rule impI)
+  apply (rule notI)
+  apply (erule impE)
+   apply assumption
+  apply (erule notE)
+  apply assumption
+  done
+
+(* CÂU 8: ((a \<longrightarrow> b) \<and> (\<not>a \<longrightarrow> b)) = b *)
+lemma cau8: "((a \<longrightarrow> b) \<and> (\<not>a \<longrightarrow> b)) = b"
+  apply (rule iffI)
+  apply (erule conjE)
+  apply (case_tac a)    
+   apply simp
+  apply simp
+  apply (rule conjI)
+   apply (rule impI)
+   apply assumption
+  apply (rule impI)
+  apply assumption
+  done
+
+(* CÂU 9: a \<longrightarrow> (b \<longrightarrow> a) *)
+lemma cau9: "a \<longrightarrow> (b \<longrightarrow> a)"
+  apply (rule impI)
+  apply (rule impI)
+  apply assumption
+  done
+
+(* Question 11 *)
+lemma cau11: "(a \<and> b) \<or> (a \<and> \<not>b) = a"
+  apply (rule iffI)
+  apply (erule disjE)
+   apply (erule conjE)
+   apply assumption
+  apply (erule conjE)
+  apply assumption
+  apply (case_tac b)
+   apply (rule disjI1)
+   apply (rule conjI)
+    apply assumption
+    apply assumption
+  apply (rule disjI2)
+  apply (rule conjI)
+   apply assumption
+  apply assumption
+  done
+
+(* Question 12 *)
+lemma cau12: "((a \<longrightarrow> a \<and> b) = (a \<longrightarrow> b)) \<and> ((a \<longrightarrow> b) = (a \<or> b \<longrightarrow> b))"
+  apply (rule conjI)
+   apply (rule iffI)
+    apply (rule impI)
+    apply (drule mp)
+     apply assumption
+    apply (erule conjE)
+    apply assumption
+   apply (rule impI)
+   apply (rule conjI)
+    apply assumption
+   apply (drule mp)
+    apply assumption
+   apply assumption
+  apply (rule iffI)
+   apply (rule impI)
+   apply (erule disjE)
+    apply (drule mp)
+     apply assumption
+    apply assumption
+   apply assumption
+  apply (rule impI)
+  apply (drule mp)
+   apply (rule disjI1)
+   apply assumption
+  apply assumption
+  done
+
+(* Question 13 *)
+lemma cau13: "((\<not>a \<longrightarrow> \<not>b) \<and> (a \<noteq> b)) \<or> (a \<and> c \<longrightarrow> b \<and> c)"
+  apply (case_tac a)
+   apply (case_tac b)
+    apply (rule disjI2)
+    apply (rule impI)
+    apply (erule conjE)
+    apply (rule conjI)
+     apply assumption
+    apply assumption
+   apply (rule disjI1)
+   apply (rule conjI)
+    apply (rule impI)
+    apply (erule notE)
+    apply assumption
+   apply (rule notI)
+   apply (erule notE)
+   apply assumption
+  apply (rule disjI2)
+  apply (rule impI)
+  apply (erule conjE)
+  apply (erule notE)
+  apply assumption
+  done
+
+(* Question 14 *)
+lemma cau14: "(a \<longrightarrow> a \<and> b) \<or> (b \<longrightarrow> a \<and> b)"
+  apply (case_tac a)
+   apply (rule disjI1)
+   apply (rule impI)
+   apply (rule conjI)
+    apply assumption
+   apply (case_tac b)
+    apply assumption
+   apply assumption
+  apply (rule disjI2)
+  apply (rule impI)
+  apply (rule conjI)
+   apply assumption
+  apply assumption
+  done
+
+(* Question 15 *)
+lemma cau15: "(a \<longrightarrow> b) \<and> (c \<longrightarrow> d) \<and> (a \<or> c) \<longrightarrow> (b \<or> d)"
+  apply (rule impI)
+  apply (erule conjE)
+  apply (erule conjE)
+  apply (erule disjE)
+   apply (rule disjI1)
+   apply (drule mp)
+    apply assumption
+   apply assumption
+  apply (rule disjI2)
+  apply (drule mp)
+   apply assumption
+  apply assumption
+  done
+
+(* Question 16 *)
+lemma cau16: "(a \<longrightarrow> b \<longrightarrow> \<not>a) \<or> (b \<and> c \<longrightarrow> a \<and> c)"
+  apply (case_tac "a \<and> b")
+   apply (rule disjI2)
+   apply (rule impI)
+   apply (erule conjE)
+   apply (rule conjI)
+    apply (erule conjE)
+    apply assumption
+   apply assumption
+  apply (rule disjI1)
+  apply (rule impI)
+  apply (rule impI)
+  apply (rule notI)
+  apply (erule notE)
+  apply (rule conjI)
+   apply assumption
+  apply assumption
+  done
+
+end
