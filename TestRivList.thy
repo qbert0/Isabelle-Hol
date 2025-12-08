@@ -76,9 +76,11 @@ lemma cau9: "a \<longrightarrow> (b \<longrightarrow> a)"
   apply assumption
   done
 
-lemma cau11: "(a \<and> b) \<or> (a \<and> \<not> b) = a"
-  by auto
-  
+
+lemma cau11: "((a \<and> b) \<or> (a \<and> \<not> b)) = a"
+  apply (simp add: distributive_and_or3)
+  done
+ 
 
 (* Question 12 *)
 lemma cau12: "((a \<longrightarrow> a \<and> b) = (a \<longrightarrow> b)) \<and> ((a \<longrightarrow> b) = (a \<or> b \<longrightarrow> b))"
