@@ -13,8 +13,7 @@ lemma cau1: "a \<and> \<not>b \<longrightarrow> a \<or> b"
 
 (* CÂU 2: ((a \<longrightarrow> b) \<longrightarrow> a) = a  *)
 lemma cau2: "((a \<longrightarrow> b) \<longrightarrow> a) = a"
-  apply (subst inclusion_def)
-  apply (subst inclusion_def)
+  apply (subst inclusion_def)+
   apply (subst duality_or)
   apply (subst double_neg)
   apply (simp add: comm_or)
@@ -31,8 +30,7 @@ lemma cau3: "a \<and> \<not>a \<longrightarrow> b"
 
 (* CÂU 4: (a \<longrightarrow> b) \<or> (b \<longrightarrow> a) *)
 lemma cau4: "(a \<longrightarrow> b) \<or> (b \<longrightarrow> a)"
-  apply (subst inclusion_def)
-  apply (subst inclusion_def)
+  apply (subst inclusion_def)+
   apply (simp add:  ac_simps) 
   done
 
@@ -59,19 +57,19 @@ lemma cau7: "(a \<longrightarrow> \<not>a) \<longrightarrow> \<not>a"
 
 (* CÂU 8: ((a \<longrightarrow> b) \<and> (\<not>a \<longrightarrow> b)) = b *)
 lemma cau8: "((a \<longrightarrow> b) \<and> (\<not>a \<longrightarrow> b)) = b"
-(*   apply (subst inclusion_def)*)
-(*   apply (subst inclusion_def)*)
-(*   apply (subst double_neg)*)
-(*  apply (subst comm_or)*)
-(* apply (subst (2) comm_or)*)
+  apply (subst inclusion_def)
+  apply (subst inclusion_def)
+  apply (subst double_neg)
+  apply (subst distributive_and_or4)
+  apply simp
 
-apply (simp)
+
+
   done
 
 (* CÂU 9: a \<longrightarrow> (b \<longrightarrow> a) *)
 lemma cau9: "a \<longrightarrow> (b \<longrightarrow> a)"
-  apply (subst inclusion_def)
-  apply (subst inclusion_def)
+  apply (subst inclusion_def)+
   apply (simp add: ac_simps)
   done
 
@@ -84,21 +82,23 @@ lemma cau11: "((a \<and> b) \<or> (a \<and> \<not>b)) = a"
 
 (* Question 12 *)
 lemma cau12: "((a \<longrightarrow> a \<and> b) = (a \<longrightarrow> b)) \<and> ((a \<longrightarrow> b) = (a \<or> b \<longrightarrow> b))"
+
+  apply (subst inclusion_def)+
+ apply (rule conjI)
  apply (simp)
   done
 
 (* Question 13 *)
 lemma cau13: "((\<not>a \<longrightarrow> \<not>b) \<and> (a \<noteq> b)) \<or> (a \<and> c \<longrightarrow> b \<and> c)"
-  apply (subst inclusion_def)
+  apply (subst inclusion_def)+
   apply (subst difference_def)
-  apply (subst inclusion_def)
+  apply (subst double_neg )+
   apply simp
   done
 
 (* Question 14 *)
 lemma cau14: "(a \<longrightarrow> a \<and> b) \<or> (b \<longrightarrow> a \<and> b)"
-  apply (subst inclusion_def)
-  apply (subst inclusion_def)
+  apply (subst inclusion_def)+
   apply (subst distributive_and_or2)
   apply simp
   done                                  
@@ -116,9 +116,7 @@ lemma cau15: "(a \<longrightarrow> b) \<and> (c \<longrightarrow> d) \<and> (a \
 
 (* Question 16 *)
 lemma cau16: "(a \<longrightarrow> b \<longrightarrow> \<not>a) \<or> (b \<and> c \<longrightarrow> a \<and> c)"
-  apply (subst inclusion_def)
-  apply (subst inclusion_def)
-  apply (subst inclusion_def)
+  apply (subst inclusion_def)+
   apply (subst duality_and)
   apply (simp)
   done
